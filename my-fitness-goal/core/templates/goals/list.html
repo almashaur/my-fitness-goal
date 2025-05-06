@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5 text-white">
+
+  <!-- Page Title -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="display-6 text-dark">🎯 Your Goals</h1>
+    <a href="{% url 'add_goal' %}" class="btn btn-success">
+      + Add Goal
+    </a>
+  </div>
+
+  <!-- Success/Error Messages as Toasts -->
+  {% if messages %}
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast show text-white bg-{{ message.tags|default:'info' }} border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">{{ message }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Goals Grid -->
+  {% if goals %}
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for goal in goals %}
+    <div class="col">
+      <div class="card bg-secondary text-white h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title d-flex justify-content-between">
+            {{ goal.title }}
+            {% if goal.is_completed %}
+              <span class="badge bg-success">✓</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">In Progress</span>
+            {% endif %}
+          </h5>
+          {% if goal.description %}
+            <p class="card-text text-light">{{ goal.description }}</p>
+          {% endif %}
+          {% if goal.target %}
+            <p class="card-text"><strong>Target:</strong> {{ goal.target }}</p>
+          {% endif %}
+          <p class="card-text"><strong>Created:</strong> {{ goal.created_at|date:"M d, Y" }}</p>
+        </div>
+        <div class="card-footer bg-dark d-flex justify-content-between">
+          <a href="{% url 'edit_goal' goal.id %}" class="btn btn-outline-light btn-sm">Edit</a>
+          <form method="post" action="{% url 'delete_goal' goal.id %}" onsubmit="return confirm('Are you sure?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p class="text-muted mt-4">You haven't added any goals yet. Start by clicking <strong>Add Goal</strong>.</p>
+  {% endif %}
+</div>
+
+<script>
+  const toastList = [].slice.call(document.querySelectorAll('.toast'));
+  toastList.map(function (toastEl) {
+    return new bootstrap.Toast(toastEl, { delay: 5000 }).show();
+  });
+</script>
+
+{% endblock %}
