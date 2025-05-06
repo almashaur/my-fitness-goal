@@ -33,21 +33,19 @@
 
     <!-- Footer -->
     <div class="card-footer bg-transparent d-flex justify-content-between mt-3">
-    <!-- Trigger Delete Modal -->
-    <button
-      type="button"
-      class="btn btn-danger"
-      data-bs-toggle="modal"
-      data-bs-target="#deleteModal"
-    >
-      Delete
-    </button>
-      <form method="post" action="{% url 'delete_workout' workout.pk %}" onsubmit="return confirm('Are you sure you want to delete this workout?');">
-        {% csrf_token %}
-        <button class="btn btn-danger btn-sm">Delete</button>
-      </form>
-    </div>
-
+      <div class="card-footer bg-dark d-flex justify-content-between">
+        <a href="{% url 'edit_goal' goal.id %}" class="btn btn-outline-light btn-sm">Edit</a>
+      
+        <!-- Trigger Delete Modal -->
+        <button
+          type="button"
+          class="btn btn-outline-danger btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteGoalModal-{{ goal.id }}"
+        >
+          Delete
+        </button>
+      </div>
   </div>
 </div>
 <!-- Delete Confirmation Modal -->
