@@ -9,8 +9,8 @@ django = "*"
 python-dotenv = "*"
 whitenoise = "*"
 gunicorn = "*"
-dj-database-url = "*"
 django-widget-tweaks = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
